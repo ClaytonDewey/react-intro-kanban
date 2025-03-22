@@ -1,21 +1,15 @@
 import TaskCard from './components/TaskCard.tsx';
-import { Task } from './utils/data-tasks.ts';
+import { tasks } from './utils/data-tasks.ts';
 
 function App() {
-  const task: Task = {
-    title: 'Do Market Research',
-    id: 'BUS-1',
-    points: 5,
-  };
-
   return (
     <>
-      <TaskCard task={task} />
-      {/* <TaskCard title={'Competitor analysis'} id={'BUS-2'} />
-      <TaskCard title={'Develop Business Strategy'} id={'BUS-3'} points={8} />
-      <TaskCard title={'Develop Marketing Strategy'} id={'BUS-4'} points={5} /> */}
+      {tasks.map((task) => (
+        <TaskCard key={task.id} task={task} />
+      ))}
     </>
   );
 }
 
 export default App;
+// https://youtu.be/gjrVCY3oPds?si=eXdPYfIj6f_gBtkN - 34:09
