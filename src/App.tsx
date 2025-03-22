@@ -1,5 +1,6 @@
-import TaskCard from './task-card';
-import { Task } from './data-tasks.ts';
+import TaskCard from './components/TaskCard.tsx';
+import { Task } from './utils/data-tasks.ts';
+
 function App() {
   const task: Task = {
     title: 'Do Market Research',
