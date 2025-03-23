@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Task } from '../utils/data-tasks';
 
 const lowPriorityIcon = (
@@ -54,11 +55,12 @@ const highPriorityIcon = (
 
 const TaskCard = ({
   task,
-  updateTaskPoints,
+  updateTask,
 }: {
   task: Task;
-  updateTaskPoints: (task: Task, points: number) => void;
+  updateTask: (task: Task) => void;
 }) => {
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
   const points = task.points || 0;
   const updatePoints = (direction: 'up' | 'down') => {
     const fib = [1, 2, 3, 5, 8, 13];
@@ -66,12 +68,24 @@ const TaskCard = ({
     const nextIndex = direction === 'up' ? index + 1 : index - 1;
     const newPoints = fib[nextIndex];
     if (newPoints) {
-      updateTaskPoints(task, newPoints);
+      updateTask({ ...task, points: newPoints });
     }
   };
   return (
     <div className='border rounded-lg px-2 m-2 bg-gray-50 w-60'>
-      <div className='text-base font-base py-2'>{task.title}</div>
+      <div className='text-base font-base py-2'>
+        {isEditingTitle ? (
+          <input
+            autoFocus
+            className='w-full'
+            onBlur={() => setIsEditingTitle(false)}
+            value={task.title}
+            onChange={(e) => updateTask({ ...task, title: e.target.value })}
+          />
+        ) : (
+          <div onClick={() => setIsEditingTitle(true)}>{task.title}</div>
+        )}
+      </div>
       <div className='flex gap-4 justify-between py-2 text-gray-500 text-sm'>
         <div className='flex gap-2'>
           <div>{task.id}</div>
