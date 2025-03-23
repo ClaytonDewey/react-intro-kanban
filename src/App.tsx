@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import TaskCard from './components/TaskCard.tsx';
-import { tasks as initialTasks, statuses, Task } from './utils/data-tasks.ts';
+import {
+  tasks as initialTasks,
+  Status,
+  statuses,
+  Task,
+} from './utils/data-tasks.ts';
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
@@ -20,10 +25,21 @@ function App() {
     setTasks(updatedTasks);
   };
 
+  const handleDrop = (e: React.DragEvent, status: Status) => {
+    e.preventDefault();
+    const id = e.dataTransfer.getData('id');
+    const task = tasks.find((t) => t.id === id);
+    if (task) {
+      updateTask({ ...task, status });
+    }
+  };
+
   return (
     <div className='flex divide-x'>
       {columns.map((column) => (
-        <div>
+        <div
+          onDrop={(e) => handleDrop(e, column.title)}
+          onDragOver={(e) => e.preventDefault()}>
           <div className='flex justify-between text-3xl p-2 text-gray-500 font-bold'>
             <h2 className='capitalize'>{column.title}</h2>
             {column.tasks.reduce(
